@@ -1,0 +1,38 @@
+{
+  "name": "Dave-the-Spooky-Estate-Agent",
+  "version": "0.0.1",
+  "description": "An estate agent, called Dave, who is spooky",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack --config webpack/prod.js ",
+    "start": "webpack-dev-server --config webpack/base.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/photonstorm/phaser3-project-template.git"
+  },
+  "author": "Stonewoodpark <hello@stonewoodpark.com> (https://stonewoodpark.com)",
+  "license": "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "bugs": {
+    "url": "https://dtsea.games.stonewoodpark.com/help"
+  },
+  "homepage": "https://dtsea.games.stonewoodpark.com",
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "raw-loader": "^3.1.0",
+    "terser-webpack-plugin": "^2.2.1",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "phaser": "^3.20.1"
+  }
+}
