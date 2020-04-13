@@ -169,21 +169,26 @@ export default class Level1 extends Phaser.Scene {
         }
     }
     
-    throwKnife(dave) {
+    throwKnife() {
         //TODO 1) Tidy up passed variables for localSys
         //TODO 2) Check for knife being spawned in object
-        if (dave.inventory.knife) {
+        if (this.localSys.dave.inventory.knife) {
             //Spawn knife Old offset 35
             var offset = 1;
             var directionMultiplier = 1;
-            if (!dave.faceingRight) {
+            if (!this.localSys.dave.faceingRight) {
                 directionMultiplier = -1;
                 offset = -1;
             }
-            dave.knife = this.physics.add.sprite((dave.x + offset), dave.y, 'spritesheet_draws_rotating_knife_44x44_4');
-            dave.knife.setVelocityX(400 * directionMultiplier);
-            dave.knife.setCollideWorldBounds(true);
-            dave.knife.faceingRight = dave.faceingRight;
+            this.localSys.dave.knife = this.physics.add.sprite((this.localSys.dave.x + offset), this.localSys.dave.y, 'spritesheet_draws_rotating_knife_44x44_4');
+            this.localSys.dave.knife.setVelocityX(400 * directionMultiplier);
+            if (this.localSys.dave.body.velocity.y > 0) {
+                this.localSys.dave.knife.setVelocityY(400);
+            } else if (this.localSys.dave.body.velocity.y < 0) {
+                this.localSys.dave.knife.setVelocityY(-400);
+            }
+            this.localSys.dave.knife.setCollideWorldBounds(true);
+            this.localSys.dave.knife.faceingRight = this.localSys.dave.faceingRight;
             
             this.anims.create({
                 key: 'knife-throw',
@@ -192,16 +197,16 @@ export default class Level1 extends Phaser.Scene {
                 repeat: -1
             });
             
-            dave.knife.anims.play('knife-throw', true);
-            if (dave.faceingRight) {
-                 dave.knife.flipX = true;
+            this.localSys.dave.knife.anims.play('knife-throw', true);
+            if (this.localSys.dave.faceingRight) {
+                 this.localSys.dave.knife.flipX = true;
             }
 
             //this.physics.add.collider(this.localSys.dave, this.localSys.dave.knife, this.pickupKnife, null, this);
             this.physics.add.collider(this.localSys.draws, this.localSys.dave.knife, this.knifeHitsObject, null, this);
             this.physics.add.collider(this.localSys.walls.outerwalls, this.localSys.dave.knife, this.knifeHitsObject, null, this);
 
-            dave.inventory.knife = false;
+            this.localSys.dave.inventory.knife = false;
             this.localSys.pickups.knife.isPickupable = false;
         }
     }
