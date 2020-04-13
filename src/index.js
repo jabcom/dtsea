@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
 import Level1 from './inc/scenes/Level1.js';
+import globalSys from './inc/globalSys.js';
 
 const config = {
     type: Phaser.AUTO,
-    parent: 'phaser',
+    parent: null,
     width: 675,
     height: 640,
-    scene: [Level1],
     physics: {
         default: 'arcade',
         arcade: {
@@ -17,4 +17,13 @@ const config = {
     }
 };
 
-const game = new Phaser.Game(config);
+class Game extends Phaser.Game {
+  constructor () {
+    super(config);
+    this.globalSys = new(globalSys);
+    this.scene.add('Level1', Level1);
+    this.scene.start('Level1');
+  }
+}
+
+const game = new Game(config);
