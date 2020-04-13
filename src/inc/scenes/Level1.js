@@ -176,12 +176,14 @@ export default class Level1 extends Phaser.Scene {
     throwKnife(dave) {
         if (dave.inventory.knife) {
             //Spawn knife
-            var offset = 1;
+            var offset = 35;
+            var directionMultiplier = 1;
             if (!dave.faceingRight) {
-                offset = -1;
+                directionMultiplier = -1;
+                offset = -35;
             }
-            dave.knife = this.physics.add.sprite((dave.x + (offset * ((dave.width / 2)+1))), dave.y, 'spritesheet_draws_rotating_knife_44x44_4');
-            dave.knife.setVelocityX(400 * offset);
+            dave.knife = this.physics.add.sprite((dave.x + offset), dave.y, 'spritesheet_draws_rotating_knife_44x44_4');
+            dave.knife.setVelocityX(400 * directionMultiplier);
             dave.knife.setCollideWorldBounds(true);
             dave.knife.faceingRight = dave.faceingRight;
             
@@ -197,7 +199,7 @@ export default class Level1 extends Phaser.Scene {
                  dave.knife.flipX = true;
             }
 
-            this.physics.add.collider(this.localSys.dave, this.localSys.pickups.knife, this.pickupKnife, null, this);
+            this.physics.add.collider(this.localSys.dave, this.localSys.dave.knife, this.pickupKnife, null, this);
 
             dave.inventory.knife = false;
             this.localSys.pickups.knife.isPickupable = false;
