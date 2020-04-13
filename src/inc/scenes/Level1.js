@@ -103,18 +103,14 @@ export default class Level1 extends Phaser.Scene {
         localSys.pickups.knife.anims.play('knife-idle', true);
         
     //Setup walls
-        localSys.walls = this.physics.add.staticGroup();
-        //Walls defined as x1, y1, x2, y2
-        let wallGeometry = [{}];
-        for (let wallGeo of wallGeometry) {
-            let width = wallGeo.x2 - wallGeo.x1;
-            let height = wallGeo.y2 - wallGeo.y1;
-            let xCenter = wallGeo.x1 + (width/2);
-            let yCenter = wallGeo.y1 + (height/2);
-            localSys.walls.create(xCenter, yCenter, '').setSize(width, height);
-        }
-        localSys.walls.setVisible(false);
-        this.physics.add.collider(localSys.dave, localSys.walls);
+        let outerWalls = [
+            {x: 0, y: 0, w: 1, h: 640},
+            {x: 0, y: 0, w: 675, h: 1},
+            {x: 674, y: 0, w: 1, h: 640},
+            {x: 0, y: 639, w: 675, h: 1}
+            ];
+        this.localSys.walls = {};
+        this.localSys.walls.outerwalls = this.drawWalls(outerWalls);
         
     //Enable keyboard
         localSys.cursors = this.input.keyboard.createCursorKeys();
@@ -177,12 +173,12 @@ export default class Level1 extends Phaser.Scene {
         //TODO 1) Tidy up passed variables for localSys
         //TODO 2) Check for knife being spawned in object
         if (dave.inventory.knife) {
-            //Spawn knife
-            var offset = 35;
+            //Spawn knife Old offset 35
+            var offset = 1;
             var directionMultiplier = 1;
             if (!dave.faceingRight) {
                 directionMultiplier = -1;
-                offset = -35;
+                offset = -1;
             }
             dave.knife = this.physics.add.sprite((dave.x + offset), dave.y, 'spritesheet_draws_rotating_knife_44x44_4');
             dave.knife.setVelocityX(400 * directionMultiplier);
@@ -201,8 +197,9 @@ export default class Level1 extends Phaser.Scene {
                  dave.knife.flipX = true;
             }
 
-            this.physics.add.collider(this.localSys.dave, this.localSys.dave.knife, this.pickupKnife, null, this);
+            //this.physics.add.collider(this.localSys.dave, this.localSys.dave.knife, this.pickupKnife, null, this);
             this.physics.add.collider(this.localSys.draws, this.localSys.dave.knife, this.knifeHitsObject, null, this);
+            this.physics.add.collider(this.localSys.walls.outerwalls, this.localSys.dave.knife, this.knifeHitsObject, null, this);
 
             dave.inventory.knife = false;
             this.localSys.pickups.knife.isPickupable = false;
@@ -235,5 +232,17 @@ export default class Level1 extends Phaser.Scene {
     
     testMethod() {
         console.log('Test Method');
+    }
+    
+    drawWalls(wallsArray) {
+        const walls = this.physics.add.staticGroup();
+        //Walls defined as x, y, w, h from top right corner
+        for (let wall of wallsArray) {
+            let wallX = wall.x + (wall.w / 2);
+            let wallY = wall.y + (wall.h / 2);
+            walls.create(wallX, wallY, '').setSize(wall.w, wall.h);
+        }
+        walls.setVisible(false);
+        return walls;
     }
 }
