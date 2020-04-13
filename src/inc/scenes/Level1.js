@@ -200,6 +200,7 @@ export default class Level1 extends Phaser.Scene {
             }
 
             this.physics.add.collider(this.localSys.dave, this.localSys.dave.knife, this.pickupKnife, null, this);
+            this.physics.add.collider(this.localSys.draws, this.localSys.dave.knife, this.knifeHitsObject, null, this);
 
             dave.inventory.knife = false;
             this.localSys.pickups.knife.isPickupable = false;
@@ -207,13 +208,13 @@ export default class Level1 extends Phaser.Scene {
     }
     
     
-    knifeHitsObject(knife) {
+    knifeHitsObject() {
         var currentKnife = {
-            x: knife.x,
-            y: knife.y,
-            faceingRight: knife.faceingRight
+            x: this.localSys.dave.knife.x,
+            y: this.localSys.dave.knife.y,
+            faceingRight: this.localSys.dave.knife.faceingRight
         };
-        knife.destroy();
+        this.localSys.dave.knife.destroy();
         var offset = -15;
         if (currentKnife.faceingRight) {
             offset = offset * -1;
