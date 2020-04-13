@@ -4,8 +4,16 @@ An attempt at a 2D game using Phaser 3
 
 ## Requirements
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+NPM
 
-## Running
+## Running in dev mode
+`git clone https://github.com/jakeswp/dtsea`
+
+`cd dtsea`
+
 `npm install`
+
 `npm start`
+
+## Running latest minified version
+Use the files in the "dist" Folder
