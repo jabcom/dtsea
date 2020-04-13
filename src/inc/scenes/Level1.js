@@ -50,7 +50,7 @@ export default class Level1 extends Phaser.Scene {
         });
         
     //Add Draws
-        localSys.draws = this.physics.add.sprite(590, 86, 'spritesheet_draws_idle_120x48_16');
+        localSys.draws = this.physics.add.sprite(450, 250, 'spritesheet_draws_idle_120x48_16');
         localSys.draws.status = 'closed';
         localSys.draws.setImmovable(true);
         this.physics.add.collider(localSys.dave, localSys.draws, function() {
@@ -174,6 +174,8 @@ export default class Level1 extends Phaser.Scene {
     }
     
     throwKnife(dave) {
+        //TODO 1) Tidy up passed variables for localSys
+        //TODO 2) Check for knife being spawned in object
         if (dave.inventory.knife) {
             //Spawn knife
             var offset = 35;
@@ -209,6 +211,7 @@ export default class Level1 extends Phaser.Scene {
     
     
     knifeHitsObject() {
+        this.physics.pause();
         var currentKnife = {
             x: this.localSys.dave.knife.x,
             y: this.localSys.dave.knife.y,
@@ -226,6 +229,8 @@ export default class Level1 extends Phaser.Scene {
         
         this.physics.add.collider(this.localSys.dave, this.localSys.pickups.knife, this.pickupKnife, null, this);
         this.localSys.pickups.knife.isPickupable = true;
+        
+        this.physics.resume();
     }
     
     testMethod() {
