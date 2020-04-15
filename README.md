@@ -7,7 +7,7 @@ An attempt at a 2D game using Phaser 3
 NPM
 
 ## Running in dev mode
-`git clone https://github.com/jakeswp/dtsea`
+`git clone https://github.com/jabcom/dtsea`
 
 `cd dtsea`
 
