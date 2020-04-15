@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import Level1 from './inc/scenes/Level1.js';
+import level1 from './inc/scenes/level1.js';
+import mirror from './inc/scenes/mirror.js';
 import globalSys from './inc/globalSys.js';
 
 const config = {
@@ -12,7 +13,7 @@ const config = {
         arcade: {
             enableBody: true,
             allowGravity: false,
-            debug: true
+            debug: false
         }
     }
 };
@@ -21,8 +22,9 @@ class Game extends Phaser.Game {
   constructor () {
     super(config);
     this.globalSys = new(globalSys);
-    this.scene.add('Level1', Level1);
-    this.scene.start('Level1');
+    this.scene.add('level1', level1);
+    this.scene.add('mirror', mirror);
+    this.scene.start('level1');
   }
 }
 

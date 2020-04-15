@@ -3,20 +3,31 @@ import 'phaser';
 
 export default class Level1 extends Phaser.Scene {
     constructor() {
-        super({key: 'Level1'});
-        console.log('Running Level1');
+        super({key: 'level1'});
+        console.log('Running level1');
         this.localSys = {};
     }
   
     preload() {
-        this.load.image('bg', 'assets/background_level_1.png');
-        this.load.image('knifeStuck', 'assets/spritesheet_draws_knife_stuck_29x8.png');
-        this.load.spritesheet('sprite-sheet-dave-bobing', 'assets/spritesheet_dave_bobbing_25x52_15.png', { frameWidth: 25, frameHeight: 52 });
-        this.load.spritesheet('spritesheet_draws_idle_120x48_16', 'assets/spritesheet_draws_idle_120x48_16.png', { frameWidth: 120, frameHeight: 48 });
-        this.load.spritesheet('spritesheet_draws_opening_120x48_6', 'assets/spritesheet_draws_opening-120x48_6.png', { frameWidth: 120, frameHeight: 48 });
-        this.load.spritesheet('spritesheet_draws_openempty_120x48_1', 'assets/spritesheet_draws_openempty_120x48_1.png', { frameWidth: 120, frameHeight: 48 });
-        this.load.spritesheet('spritesheet_draws_rotating_knife_44x44_4', 'assets/spritesheet_draws_rotating_knife_44x44_4.png', { frameWidth: 44, frameHeight: 44 });
-        this.load.spritesheet('spritesheet_draws_idle_knife_44x8_7', 'assets/spritesheet_draws_idle_knife_44x8_7.png', { frameWidth: 44, frameHeight: 8 });
+        let images = [
+            {name: 'bg', file: 'background_675x640.png'},
+            {name: 'knifeStuck', file: 'knife_stuck_29x8.png'}
+            ];
+        for (let image of images) {
+            this.load.image(image.name, 'assets/level1/image/'+image.file);
+        }
+        
+        let spritesheets = [
+            {name: 'dave_bobing_25x52_15', file: 'dave_bobbing_25x52_15.png', width: 25, height: 52},
+            {name: 'draws_idle_120x48_16', file: 'draws_idle_120x48_16.png', width: 120, height: 48},
+            {name: 'draws_opening_120x48_6', file: 'draws_opening_120x48_6.png', width: 120, height: 48},
+            {name: 'draws_open_empty_120x48_1', file: 'draws_open_empty_120x48_1.png', width: 120, height: 48},
+            {name: 'knife_rotating_44x44_4', file: 'knife_rotating_44x44_4.png', width: 44, height: 44},
+            {name: 'knife_idle_44x8_7', file: 'knife_idle_44x8_7.png', width: 44, height: 8},
+            ];
+        for (let spritesheet of spritesheets) {
+            this.load.spritesheet(spritesheet.name, 'assets/level1/spritesheet/'+spritesheet.file, {frameWidth: spritesheet.width, frameHeight: spritesheet.height});
+        }
     }
   
     create() {
@@ -28,7 +39,7 @@ export default class Level1 extends Phaser.Scene {
     //Add Background
         this.add.image(338, 320, 'bg');
     //Add Dave
-        localSys.dave = this.physics.add.sprite(400, 100, 'sprite-sheet-dave-bobing');
+        localSys.dave = this.physics.add.sprite(400, 100, 'dave_bobing_25x52_15');
         localSys.dave.setCollideWorldBounds(true);
         localSys.dave.setAlpha(0.7);
         //localSys.dave.setSize(25, 10, false);
@@ -38,19 +49,19 @@ export default class Level1 extends Phaser.Scene {
         
         this.anims.create({
             key: 'dave-run',
-            frames: this.anims.generateFrameNumbers('sprite-sheet-dave-bobing', { start: 0, end: 14 }),
+            frames: this.anims.generateFrameNumbers('dave_bobing_25x52_15', { start: 0, end: 14 }),
             frameRate: 36,
             repeat: -1
         });
         this.anims.create({
             key: 'dave-idle',
-            frames: this.anims.generateFrameNumbers('sprite-sheet-dave-bobing', { start: 0, end: 14 }),
+            frames: this.anims.generateFrameNumbers('dave_bobing_25x52_15', { start: 0, end: 14 }),
             frameRate: 12,
             repeat: -1
         });
         
     //Add Draws
-        localSys.draws = this.physics.add.sprite(450, 250, 'spritesheet_draws_idle_120x48_16');
+        localSys.draws = this.physics.add.sprite(450, 250, 'draws_idle_120x48_16');
         localSys.draws.status = 'closed';
         localSys.draws.setImmovable(true);
         this.physics.add.collider(localSys.dave, localSys.draws, function() {
@@ -69,33 +80,33 @@ export default class Level1 extends Phaser.Scene {
         
         this.anims.create({
             key: 'draws-idle',
-            frames: this.anims.generateFrameNumbers('spritesheet_draws_idle_120x48_16', { start: 0, end: 15 }),
+            frames: this.anims.generateFrameNumbers('draws_idle_120x48_16', { start: 0, end: 15 }),
             frameRate: 24,
             repeat: -1,
             repeatDelay: 1000
         });
         this.anims.create({
             key: 'draws-opening-full',
-            frames: this.anims.generateFrameNumbers('spritesheet_draws_opening_120x48_6', { start: 0, end: 5 }),
+            frames: this.anims.generateFrameNumbers('draws_opening_120x48_6', { start: 0, end: 5 }),
             frameRate: 12,
             repeat: 0
         });
         this.anims.create({
             key: 'draws-open-empty',
-            frames: this.anims.generateFrameNumbers('spritesheet_draws_openempty_120x48_1', { start: 0, end: 0 }),
+            frames: this.anims.generateFrameNumbers('draws_open_empty_120x48_1', { start: 0, end: 0 }),
             frameRate: 1,
             repeat: 0
         });
         
         
     //Add Knife
-        localSys.pickups.knife =  this.physics.add.sprite(100, 200, 'spritesheet_draws_idle_knife_44x8_7');
+        localSys.pickups.knife =  this.physics.add.sprite(100, 200, 'knife_idle_44x8_7');
         this.physics.add.collider(this.localSys.dave, this.localSys.pickups.knife, this.pickupKnife, null, this);
         localSys.pickups.knife.isPickupable = true;
         localSys.dave.inventory.knife = false;
         this.anims.create({
             key: 'knife-idle',
-            frames: this.anims.generateFrameNumbers('spritesheet_draws_idle_knife_44x8_7', { start: 0, end: 6 }),
+            frames: this.anims.generateFrameNumbers('knife_idle_44x8_7', { start: 0, end: 6 }),
             frameRate: 12,
             repeat: -1,
             repeatDelay: 1000
@@ -180,7 +191,7 @@ export default class Level1 extends Phaser.Scene {
                 directionMultiplier = -1;
                 offset = -1;
             }
-            this.localSys.dave.knife = this.physics.add.sprite((this.localSys.dave.x + offset), this.localSys.dave.y, 'spritesheet_draws_rotating_knife_44x44_4');
+            this.localSys.dave.knife = this.physics.add.sprite((this.localSys.dave.x + offset), this.localSys.dave.y, 'knife_rotating_44x44_4');
             this.localSys.dave.knife.setVelocityX(400 * directionMultiplier);
             if (this.localSys.dave.body.velocity.y > 0) {
                 this.localSys.dave.knife.setVelocityY(400);
@@ -192,7 +203,7 @@ export default class Level1 extends Phaser.Scene {
             
             this.anims.create({
                 key: 'knife-throw',
-                frames: this.anims.generateFrameNumbers('spritesheet_draws_rotating_knife_44x44_4', { start: 0, end: 3 }),
+                frames: this.anims.generateFrameNumbers('knife_rotating_44x44_4', { start: 0, end: 3 }),
                 frameRate: 12,
                 repeat: -1
             });
@@ -212,14 +223,39 @@ export default class Level1 extends Phaser.Scene {
     }
     
     
-    knifeHitsObject() {
+    knifeHitsObject(object) {
         this.physics.pause();
+        
         var currentKnife = {
             x: this.localSys.dave.knife.x,
             y: this.localSys.dave.knife.y,
-            faceingRight: this.localSys.dave.knife.faceingRight
+            height: this.localSys.dave.knife.height,
+            width: this.localSys.dave.knife.width,
+            faceingRight: this.localSys.dave.knife.faceingRight,
+            edge: {
+                top: (this.localSys.dave.knife.y-(this.localSys.dave.knife.height/2)),
+                bottom: (this.localSys.dave.knife.y+(this.localSys.dave.knife.height/2)),
+                left: (this.localSys.dave.knife.x-(this.localSys.dave.knife.width/2)),
+                right: (this.localSys.dave.knife.x+(this.localSys.dave.knife.wodth/2))
+            }
         };
+        var currentObject = {
+            x: object.x,
+            y: object.y,
+            edge: {
+                top: (object.y-(object.height/2)),
+                bottom: (object.y+(object.height/2)),
+                left: (object.x-(object.width/2)),
+                right: (object.x+(object.wodth/2))
+            }
+        }
+        var newKnife = currentKnife;
         this.localSys.dave.knife.destroy();
+        
+        //Move knife to clostes edge
+        
+        //Check orientation and align
+        
         var offset = -15;
         if (currentKnife.faceingRight) {
             offset = offset * -1;
@@ -249,5 +285,9 @@ export default class Level1 extends Phaser.Scene {
         }
         walls.setVisible(false);
         return walls;
+    }
+    
+    interactWithMirror(MirrorID) {
+        
     }
 }
