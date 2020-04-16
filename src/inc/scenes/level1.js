@@ -7,7 +7,7 @@ export default class Level1 extends Phaser.Scene {
         console.log('Running level1');
         this.localSys = {};
     }
-  
+
     preload() {
         let images = [
             {name: 'bg', file: 'background_675x640.png'},
@@ -16,7 +16,7 @@ export default class Level1 extends Phaser.Scene {
         for (let image of images) {
             this.load.image(image.name, 'assets/level1/image/'+image.file);
         }
-        
+
         let spritesheets = [
             {name: 'dave_bobing_25x52_15', file: 'dave_bobbing_25x52_15.png', width: 25, height: 52},
             {name: 'draws_idle_120x48_16', file: 'draws_idle_120x48_16.png', width: 120, height: 48},
@@ -29,13 +29,12 @@ export default class Level1 extends Phaser.Scene {
             this.load.spritesheet(spritesheet.name, 'assets/level1/spritesheet/'+spritesheet.file, {frameWidth: spritesheet.width, frameHeight: spritesheet.height});
         }
     }
-  
+
     create() {
-        this.testMethod();
     //Variables
         var localSys = this.localSys;
         localSys.pickups = {};
-        
+
     //Add Background
         this.add.image(338, 320, 'bg');
     //Add Dave
@@ -46,7 +45,7 @@ export default class Level1 extends Phaser.Scene {
         //localSys.dave.setOffset(0, 42);
         localSys.dave.faceingRight = true;
         localSys.dave.inventory = {};
-        
+
         this.anims.create({
             key: 'dave-run',
             frames: this.anims.generateFrameNumbers('dave_bobing_25x52_15', { start: 0, end: 14 }),
@@ -59,7 +58,7 @@ export default class Level1 extends Phaser.Scene {
             frameRate: 12,
             repeat: -1
         });
-        
+
     //Add Draws
         localSys.draws = this.physics.add.sprite(450, 250, 'draws_idle_120x48_16');
         localSys.draws.status = 'closed';
@@ -77,7 +76,7 @@ export default class Level1 extends Phaser.Scene {
                 localSys.draws.anims.play('draws-open-empty');
             }
         });
-        
+
         this.anims.create({
             key: 'draws-idle',
             frames: this.anims.generateFrameNumbers('draws_idle_120x48_16', { start: 0, end: 15 }),
@@ -97,8 +96,8 @@ export default class Level1 extends Phaser.Scene {
             frameRate: 1,
             repeat: 0
         });
-        
-        
+
+
     //Add Knife
         localSys.pickups.knife =  this.physics.add.sprite(100, 200, 'knife_idle_44x8_7');
         this.physics.add.collider(this.localSys.dave, this.localSys.pickups.knife, this.pickupKnife, null, this);
@@ -112,7 +111,7 @@ export default class Level1 extends Phaser.Scene {
             repeatDelay: 1000
         });
         localSys.pickups.knife.anims.play('knife-idle', true);
-        
+
     //Setup walls
         let outerWalls = [
             {x: 0, y: 0, w: 1, h: 640},
@@ -122,20 +121,20 @@ export default class Level1 extends Phaser.Scene {
             ];
         this.localSys.walls = {};
         this.localSys.walls.outerwalls = this.drawWalls(outerWalls);
-        
+
     //Enable keyboard
         localSys.cursors = this.input.keyboard.createCursorKeys();
-        
+
     //Setup main camera
         this.cameras.main.setBounds(0, 0, 900, 600);
         this.cameras.main.startFollow(localSys.dave);
-        
-        
+
+
     //Start idle animations
         localSys.dave.anims.play('dave-idle', true);
         localSys.draws.anims.play('draws-idle', true);
     }
-  
+
     update() {
         var localSys = this.localSys;
     //Daves Movement
@@ -164,14 +163,14 @@ export default class Level1 extends Phaser.Scene {
                   localSys.dave.anims.play('dave-idle', true);
             }
         }
-        
+
     //Daves fire
         if (localSys.cursors.space.isDown) {
             this.throwKnife(localSys.dave);
         }
-        
+
     }
-    
+
     pickupKnife(dave, knife) {
         if (this.localSys.pickups.knife.isPickupable || true) {
             knife.destroy();
@@ -179,7 +178,7 @@ export default class Level1 extends Phaser.Scene {
             this.localSys.pickups.knife.isPickupable = false;
         }
     }
-    
+
     throwKnife() {
         //TODO 1) Tidy up passed variables for localSys
         //TODO 2) Check for knife being spawned in object
@@ -200,14 +199,14 @@ export default class Level1 extends Phaser.Scene {
             }
             this.localSys.dave.knife.setCollideWorldBounds(true);
             this.localSys.dave.knife.faceingRight = this.localSys.dave.faceingRight;
-            
+
             this.anims.create({
                 key: 'knife-throw',
                 frames: this.anims.generateFrameNumbers('knife_rotating_44x44_4', { start: 0, end: 3 }),
                 frameRate: 12,
                 repeat: -1
             });
-            
+
             this.localSys.dave.knife.anims.play('knife-throw', true);
             if (this.localSys.dave.faceingRight) {
                  this.localSys.dave.knife.flipX = true;
@@ -221,11 +220,11 @@ export default class Level1 extends Phaser.Scene {
             this.localSys.pickups.knife.isPickupable = false;
         }
     }
-    
-    
+
+
     knifeHitsObject(object) {
         this.physics.pause();
-        
+
         var currentKnife = {
             x: this.localSys.dave.knife.x,
             y: this.localSys.dave.knife.y,
@@ -251,11 +250,11 @@ export default class Level1 extends Phaser.Scene {
         }
         var newKnife = currentKnife;
         this.localSys.dave.knife.destroy();
-        
+
         //Move knife to clostes edge
-        
+
         //Check orientation and align
-        
+
         var offset = -15;
         if (currentKnife.faceingRight) {
             offset = offset * -1;
@@ -264,17 +263,14 @@ export default class Level1 extends Phaser.Scene {
         if (currentKnife.faceingRight) {
             this.localSys.pickups.knife.flipX = true;
         }
-        
+
         this.physics.add.collider(this.localSys.dave, this.localSys.pickups.knife, this.pickupKnife, null, this);
         this.localSys.pickups.knife.isPickupable = true;
-        
+
         this.physics.resume();
     }
-    
-    testMethod() {
-        console.log('Test Method');
-    }
-    
+
+
     drawWalls(wallsArray) {
         const walls = this.physics.add.staticGroup();
         //Walls defined as x, y, w, h from top right corner
@@ -286,8 +282,8 @@ export default class Level1 extends Phaser.Scene {
         walls.setVisible(false);
         return walls;
     }
-    
+
     interactWithMirror(MirrorID) {
-        
+
     }
 }
